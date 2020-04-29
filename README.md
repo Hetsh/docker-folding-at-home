@@ -44,6 +44,7 @@ systemctl enable folding-at-home --now
 ```
 The systemd unit can be found in my [GitHub repository](https://github.com/Hetsh/docker-folding-at-home).
 By default, the systemd service assumes `/etc/folding-at-home` for storage and `/etc/localtime` for timezone.
+Also, ports for the web interface and the controller are not exposed.
 You need to adjust these to suit your setup.
 
 ## Fork Me!
