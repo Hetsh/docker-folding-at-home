@@ -27,21 +27,21 @@ MAJOR_FAH_VERSION=$(curl -L -s "$BASE_URL" | grep -P -o "v$FAH_VERSION_REGEX" | 
 
 # Folding@Home client
 CURRENT_FAH_VERSION="${_CURRENT_VERSION%-*}"
-NEW_FAH_VERSION=$(curl -L -s "BASE_URL/$NEW_FAH_VERSION" | grep -P -o "$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
+NEW_FAH_VERSION=$(curl -L -s "$BASE_URL/$MAJOR_FAH_VERSION" | grep -P -o "$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
 if [ "$CURRENT_FAH_VERSION" != "$NEW_FAH_VERSION" ]; then
-	prepare_update "ARCHIVE_URL" "Folding@Home" "$CURRENT_FAH_VERSION" "$NEW_FAH_VERSION"
-	update_version "$NEW_TS_VERSION"
+	prepare_update "" "Folding@Home" "$CURRENT_FAH_VERSION" "$NEW_FAH_VERSION"
+	update_version "$NEW_FAH_VERSION"
 
-	# Since the minecraft server is not a regular package, the version number needs
+	# Since the Folding@Home client is not a regular package, the version number needs
 	# to be replaced with the url to download the binary
-	_UPDATES[-3]="BIN_URL"
+	_UPDATES[-3]="ARCHIVE_URL"
 	_UPDATES[-2]="\".*\""
 	_UPDATES[-1]="\"$BASE_URL/$MAJOR_FAH_VERSION/fahclient_$NEW_FAH_VERSION-64bit-release.tar.bz2\""
 fi
 
 # Packages
 PKG_URL="https://packages.debian.org/$IMG_CHANNEL/amd64"
-update_pkg "lib32gcc1" "32bit GCC libs" "false" "$PKG_URL" "\d+:(\d+\.)+\d+-\d+"
+update_pkg "bzip2" "BZip2" "false" "$PKG_URL" "(\d+\.)+\d+-(\d+\.)+\d+~deb\d+u\d+"
 update_pkg "ca-certificates" "CA-Certificates" "false" "$PKG_URL" "\d{8}"
 
 if ! updates_available; then
