@@ -21,7 +21,7 @@ RUN tar --extract --directory "$FAH_DIR" --file "$FAH_DIR/$FAH_ARCHIVE" --strip-
 ENV PATH="$FAH_DIR:$PATH"
 
 # Volumes
-ARG DATA_DIR="/fah"
+ARG DATA_DIR="/folding-at-home"
 RUN mkdir "$DATA_DIR" && \
     chown -R "$APP_USER":"$APP_USER" "$DATA_DIR"
 VOLUME ["$DATA_DIR"]
