@@ -3,7 +3,7 @@ Simple to set up image equipped with the Folding@Home client.
 
 ## Running the server
 ```bash
-docker run --detach --name folding-at-home --publish 7396:7396 --publish 36330:36330 hetsh/folding-at-home
+docker run --detach --name folding-at-home hetsh/folding-at-home
 ```
 
 ## Stopping the container
@@ -15,7 +15,11 @@ docker stop folding-at-home
 The Folding@Home client can be configured via its [web interface](http://localhost:7396).
 This requires some additional cli parameters at startup:
 ```bash
-docker run ... hetsh/folding-at-home --web-allow=0/0:7396 --allow=0/0:7396
+docker run ... --publish 7396:7396 hetsh/folding-at-home --web-allow=0/0:7396 --allow=0/0:7396
+```
+Alternatively the Folding@Home Controller can connect to the client via port `36330`:
+```bash
+docker run ... --publish 36330:36330 hetsh/folding-at-home --allow=0/0:36330
 ```
 
 ## Creating persistent storage
@@ -44,7 +48,7 @@ systemctl enable folding-at-home --now
 ```
 The systemd unit can be found in my [GitHub repository](https://github.com/Hetsh/docker-folding-at-home).
 By default, the systemd service assumes `/etc/folding-at-home` for storage and `/etc/localtime` for timezone.
-Also, ports for the web interface and the controller are not exposed.
+Also, ports for the web interface and the controller are not published.
 You need to adjust these to suit your setup.
 
 ## Fork Me!

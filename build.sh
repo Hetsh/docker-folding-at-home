@@ -41,5 +41,5 @@ if confirm_action "Test image?"; then
 	--mount type=bind,source="$TMP_DIR",target="/$DATA_DIR" \
 	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
 	--name "$APP_NAME" \
-	"$APP_NAME" --paused=true
+	"$APP_NAME" --paused --web-allow=0/0:7396 --allow=0/0:7396
 fi
