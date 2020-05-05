@@ -13,7 +13,7 @@ RUN useradd --uid "$APP_UID" --user-group --no-create-home --shell /sbin/nologin
 # Folding@Home package
 ARG FAH_DIR="/opt/folding-at-home"
 ARG FAH_ARCHIVE="fah.tar.bz2"
-ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.9-64bit-release.tar.bz2"
+ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.13-64bit-release.tar.bz2"
 ADD "$ARCHIVE_URL" "$FAH_DIR/$FAH_ARCHIVE"
 RUN tar --extract --directory "$FAH_DIR" --file "$FAH_DIR/$FAH_ARCHIVE" --strip-components=1 && \
     apt-get purge -y bzip2 && \
