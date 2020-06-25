@@ -5,12 +5,11 @@ Requires=docker.service
 
 [Service]
 ExecStartPre=-/bin/docker create \
-			  --rm \
-			  --interactive \
-			  --name folding-at-home \
-			  --mount type=bind,source=/etc/folding-at-home,target=/folding-at-home \
-			  --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-			  hetsh/folding-at-home
+              --rm \
+              --name folding-at-home \
+              --mount type=bind,source=/etc/folding-at-home,target=/folding-at-home \
+              --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
+              hetsh/folding-at-home
 ExecStart=/bin/docker start --attach folding-at-home
 ExecStop=/bin/docker stop folding-at-home
 
