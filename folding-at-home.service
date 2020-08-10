@@ -10,7 +10,7 @@ ExecStartPre=-/bin/docker create \
               --publish 7396:7396/tcp \
               --mount type=bind,source=/apps/folding-at-home,target=/folding-at-home \
               --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-              hetsh/folding-at-home
+              hetsh/folding-at-home --web-allow=0/0:7396 --allow=0/0:7396
 ExecStart=/bin/docker start --attach folding-at-home
 ExecStop=/bin/docker stop --time 300 folding-at-home
 
