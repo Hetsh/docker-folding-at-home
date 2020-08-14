@@ -23,11 +23,11 @@ update_image "library/debian" "Debian" "false" "$IMG_CHANNEL-\d+-slim"
 # Folding@Home has folders for major versions, requiring two stage version scrape
 FAH_VERSION_REGEX="(\d+\.)+\d+"
 BASE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit"
-MAJOR_FAH_VERSION=$(curl -L -s "$BASE_URL" | grep -P -o "v$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
+MAJOR_FAH_VERSION=$(curl --silent --location "$BASE_URL" | grep -P -o "v$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
 
 # Folding@Home client
 CURRENT_FAH_VERSION="${_CURRENT_VERSION%-*}"
-NEW_FAH_VERSION=$(curl -L -s "$BASE_URL/$MAJOR_FAH_VERSION" | grep -P -o "$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
+NEW_FAH_VERSION=$(curl --silent --location "$BASE_URL/$MAJOR_FAH_VERSION" | grep -P -o "$FAH_VERSION_REGEX" | sort --version-sort | tail -n 1)
 if [ "$CURRENT_FAH_VERSION" != "$NEW_FAH_VERSION" ]; then
 	prepare_update "" "Folding@Home" "$CURRENT_FAH_VERSION" "$NEW_FAH_VERSION"
 	update_version "$NEW_FAH_VERSION"
