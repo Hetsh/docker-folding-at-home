@@ -51,4 +51,5 @@ By default, the systemd service assumes `/apps/folding-at-home` for storage and 
 Since this is a personal systemd unit file, you might need to adjust some parameters to suit your setup.
 
 ## Fork Me!
-This is an open project hosted on [GitHub](https://github.com/Hetsh/docker-folding-at-home). Please feel free to ask questions, file an issue or contribute to it.
+This is an open project hosted on [GitHub](https://github.com/Hetsh/docker-folding-at-home).
+Please feel free to ask questions, file an issue or contribute to it.
