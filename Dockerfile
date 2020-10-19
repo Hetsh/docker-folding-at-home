@@ -1,7 +1,7 @@
 FROM library/debian:stable-20201012-slim
 RUN DEBIAN_FRONTEND="noninteractive" && \
     apt-get update && \
-    apt-get install  --no-install-recommends --assume-yes \
+    apt-get install --no-install-recommends --assume-yes \
         bzip2=1.0.6-9.2~deb10u1 \
         ca-certificates=20190110 && \
     rm -r /var/lib/apt/lists /var/cache/apt
@@ -12,14 +12,14 @@ ARG APP_UID=1362
 RUN useradd --uid "$APP_UID" --user-group --no-create-home --shell /sbin/nologin "$APP_USER"
 
 # Folding@Home package
-ARG FAH_DIR="/opt/folding-at-home"
-ARG FAH_ARCHIVE="fah.tar.bz2"
-ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.20-64bit-release.tar.bz2"
-ADD "$ARCHIVE_URL" "$FAH_DIR/$FAH_ARCHIVE"
-RUN tar --extract --directory "$FAH_DIR" --file "$FAH_DIR/$FAH_ARCHIVE" --strip-components=1 && \
-    apt-get purge -y bzip2 && \
-    rm -r "$FAH_DIR/$FAH_ARCHIVE" /var/lib/apt/lists /var/cache/apt
-ENV PATH="$FAH_DIR:$PATH"
+ARG FAH_PKG="fahclient"
+ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.13_amd64.deb"
+ADD "$ARCHIVE_URL" "$FAH_PKG.deb"
+RUN DEBIAN_FRONTEND="noninteractive" \
+    dpkg --unpack "$FAH_PKG.deb" && \
+    rm /var/lib/dpkg/info/fahclient.postinst && \
+    dpkg --configure "$FAH_PKG" && \
+    rm "$FAH_PKG.deb"
 
 # Volumes
 ARG DATA_DIR="/folding-at-home"
