@@ -12,16 +12,16 @@ cd "$CWD"
 source libs/common.sh
 source libs/docker.sh
 
-update_url() {
-	URL_ID="$1"
-	NAME="$2"
-	MAIN="$3"
-	MIRROR="$4"
-	URL_REGEX="$5"
-	VERSION_REGEX="$6"
+update_custom() {
+	local ID="$1"
+	local NAME="$2"
+	local MAIN="$3"
+	local MIRROR="$4"
+	local URL_REGEX="$5"
+	local VERSION_REGEX="$6"
 
-	CURRENT_URL=$(cat Dockerfile | grep --only-matching --perl-regexp "(?<=$URL_ID=\").*(?=\")")
-	NEW_URL=$(curl --silent --location "$MIRROR" | grep --only-matching --perl-regexp "(?<=(\"|'))$URL_REGEX(?=(\"|'))")
+	local CURRENT_URL=$(cat Dockerfile | grep --only-matching --perl-regexp "(?<=$ID=\").*(?=\")")
+	local NEW_URL=$(curl --silent --location "$MIRROR" | grep --only-matching --perl-regexp "(?<=(\"|'))$URL_REGEX(?=(\"|'))")
 	if [ -z "$CURRENT_URL" ] || [ -z "$NEW_URL" ]; then
 		echo -e "\e[31mFailed to scrape $NAME URL!\e[0m"
 		return
@@ -40,15 +40,15 @@ update_url() {
 		NEW_URL="$MIRROR/$NEW_URL"
 	fi
 
-	CURRENT_VERSION=$(echo "$CURRENT_URL" | grep --only-matching --perl-regexp "$VERSION_REGEX")
-	NEW_VERSION=$(echo "$NEW_URL" | grep --only-matching --perl-regexp "$VERSION_REGEX")
+	local CURRENT_VERSION=$(echo "$CURRENT_URL" | grep --only-matching --perl-regexp "$VERSION_REGEX")
+	local NEW_VERSION=$(echo "$NEW_URL" | grep --only-matching --perl-regexp "$VERSION_REGEX")
 	if [ -z "$CURRENT_VERSION" ] || [ -z "$NEW_VERSION" ]; then
 		echo -e "\e[31mFailed to scrape $NAME version!\e[0m"
 		return
 	fi
 
 	if [ "$CURRENT_URL" != "$NEW_URL" ]; then
-		prepare_update "$URL_ID" "$NAME" "$CURRENT_VERSION" "$NEW_VERSION" "$CURRENT_URL" "$NEW_URL"
+		prepare_update "$ID" "$NAME" "$CURRENT_VERSION" "$NEW_VERSION" "$CURRENT_URL" "$NEW_URL"
 
 		if [ "$MAIN" = "true" ] && [ "${CURRENT_VERSION%-*}" != "${NEW_VERSION%-*}" ]; then
 			update_version "$NEW_VERSION"
@@ -68,7 +68,7 @@ update_image "library/debian" "Debian" "false" "$IMG_CHANNEL-\d+-slim"
 
 # Folding@Home
 VERSION_REGEX="(\d+\.){2}\d+"
-update_url "ARCHIVE_URL" "Folding@Home" "true" "https://foldingathome.org/#downloads" "http.*fahclient_${VERSION_REGEX}_amd64.deb" "$VERSION_REGEX"
+update_custom "ARCHIVE_URL" "Folding@Home" "true" "https://foldingathome.org/#downloads" "http.*fahclient_${VERSION_REGEX}_amd64.deb" "$VERSION_REGEX"
 
 # Packages
 PKG_URL="https://packages.debian.org/$IMG_CHANNEL/amd64"
