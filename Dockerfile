@@ -1,9 +1,10 @@
 FROM library/debian:stable-20201012-slim
 RUN DEBIAN_FRONTEND="noninteractive" && \
     apt-get update && \
-    apt-get install --assume-yes \
+    apt-get install  --no-install-recommends --assume-yes \
         bzip2=1.0.6-9.2~deb10u1 \
-        ca-certificates=20190110
+        ca-certificates=20190110 && \
+    rm -r /var/lib/apt/lists /var/cache/apt
 
 # App user
 ARG APP_USER="fah"
