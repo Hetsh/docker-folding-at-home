@@ -13,7 +13,7 @@ RUN useradd --uid "$APP_UID" --user-group --no-create-home --shell /sbin/nologin
 
 # Folding@Home package
 ARG FAH_PKG="fahclient"
-ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.13_amd64.deb"
+ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.21_amd64.deb"
 ADD "$ARCHIVE_URL" "$FAH_PKG.deb"
 RUN DEBIAN_FRONTEND="noninteractive" \
     dpkg --unpack "$FAH_PKG.deb" && \
