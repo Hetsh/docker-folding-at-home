@@ -73,7 +73,7 @@ update_custom "ARCHIVE_URL" "Folding@Home" "true" "https://foldingathome.org/#do
 # Packages
 PKG_URL="https://packages.debian.org/$IMG_CHANNEL/amd64"
 update_pkg "bzip2" "BZip2" "false" "$PKG_URL" "(\d+\.)+\d+-(\d+\.)+\d+~deb\d+u\d+"
-update_pkg "ca-certificates" "CA-Certificates" "false" "$PKG_URL" "\d{8}"
+update_pkg "ca-certificates" "CA-Certificates" "false" "$PKG_URL" "\d{8}~deb\d+u\d+"
 
 if ! updates_available; then
 	#echo "No updates available."
