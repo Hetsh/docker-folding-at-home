@@ -1,7 +1,7 @@
 FROM library/debian:stable-20210511-slim
 ARG DEBIAN_FRONTEND="noninteractive"
-RUN apt-get update && \
-    apt-get install --no-install-recommends --assume-yes \
+RUN apt update && \
+    apt install --no-install-recommends --assume-yes \
         bzip2=1.0.6-9.2~deb10u1 \
         ca-certificates=20200601~deb10u2 && \
     rm -r /var/lib/apt/lists /var/cache/apt
