@@ -12,13 +12,15 @@ ARG APP_UID=1362
 RUN useradd --uid "$APP_UID" --user-group --no-create-home --shell /sbin/nologin "$APP_USER"
 
 # Folding@Home package
-ARG FAH_PKG="fahclient"
-ARG ARCHIVE_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.21_amd64.deb"
-ADD "$ARCHIVE_URL" "$FAH_PKG.deb"
-RUN dpkg --unpack "$FAH_PKG.deb" && \
-    rm /var/lib/dpkg/info/fahclient.postinst && \
-    dpkg --configure "$FAH_PKG" && \
-    rm "$FAH_PKG.deb"
+ARG PKG_URL="https://download.foldingathome.org/releases/public/release/fahclient/debian-stable-64bit/v7.6/fahclient_7.6.21_amd64.deb"
+RUN apt update && \
+    apt install --no-install-recommends --assume-yes wget && \
+    wget --quiet "$PKG_URL" && \
+    apt purge --assume-yes --auto-remove wget && \
+    rm -r /var/lib/apt/lists /var/cache/apt && \
+    dpkg --unpack *.deb && \
+    rm *.deb /var/lib/dpkg/info/fahclient.postinst && \
+    dpkg --configure "fahclient"
 
 # Volumes
 ARG DATA_DIR="/folding-at-home"

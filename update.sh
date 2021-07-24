@@ -68,7 +68,7 @@ update_image "library/debian" "Debian" "false" "$IMG_CHANNEL-\d+-slim"
 
 # Folding@Home
 VERSION_REGEX="(\d+\.){2}\d+"
-update_custom "ARCHIVE_URL" "Folding@Home" "true" "https://foldingathome.org/#downloads" "http.*fahclient_${VERSION_REGEX}_amd64.deb" "$VERSION_REGEX"
+update_custom "PKG_URL" "Folding@Home" "true" "https://foldingathome.org/#downloads" "http.*fahclient_${VERSION_REGEX}_amd64.deb" "$VERSION_REGEX"
 
 # Packages
 PKG_URL="https://packages.debian.org/$IMG_CHANNEL/amd64"
