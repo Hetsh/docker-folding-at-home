@@ -19,29 +19,37 @@ if ! docker version &> /dev/null; then
 	exit -1
 fi
 
-# Build the image
-APP_NAME="folding-at-home"
-IMG_NAME="hetsh/$APP_NAME"
-docker build --tag "$IMG_NAME:latest" --tag "$IMG_NAME:$_NEXT_VERSION" .
-
+IMG_NAME="hetsh/folding-at-home"
 case "${1-}" in
-	# Test with default configuration
+	# Build and test with default configuration
 	"--test")
+		docker build \
+			--tag "$IMG_NAME:test" \
+			.
 		docker run \
-		--rm \
-		--tty \
-		--interactive \
-		--publish 7396:7396/tcp \
-		--publish 36330:36330/tcp \
-		--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-		--name "$APP_NAME" \
-		"$IMG_NAME" --paused --web-allow=0/0:7396 --allow=0/0:7396
+			--rm \
+			--tty \
+			--interactive \
+			--publish 7396:7396/tcp \
+			--publish 36330:36330/tcp \
+			--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
+			"$IMG_NAME:test" --paused --web-allow=0/0:7396 --allow=0/0:7396
 	;;
-	# Push image to docker hub
+	# Build if it does not exist and push image to docker hub
 	"--upload")
 		if ! tag_exists "$IMG_NAME"; then
+			docker build \
+				--tag "$IMG_NAME:latest" \
+				--tag "$IMG_NAME:$_NEXT_VERSION" \
+				.
 			docker push "$IMG_NAME:latest"
 			docker push "$IMG_NAME:$_NEXT_VERSION"
 		fi
+	;;
+	# Build image without additonal steps
+	*)
+		docker build \
+			--tag "$IMG_NAME:latest" \
+			.
 	;;
 esac
