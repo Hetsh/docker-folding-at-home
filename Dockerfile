@@ -2,8 +2,8 @@ FROM amd64/debian:stable-20210816-slim
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update && \
     apt install --no-install-recommends --assume-yes \
-        bzip2=1.0.6-9.2~deb10u1 \
-        ca-certificates=20200601~deb10u2 && \
+        bzip2=1.0.8-4 \
+        ca-certificates=20210119 && \
     rm -r /var/lib/apt/lists /var/cache/apt
 
 # App user
